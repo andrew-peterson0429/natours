@@ -2,21 +2,33 @@ const Tour = require("../models/tourModel");
 
 exports.getAllTours = async (req, res) => {
   try {
-    console.log(req.query);
+    console.log("this is req.query: ", req.query);
     // BUILD QUERY
-    // 1) Filtering
+    // 1A) Filtering
     const queryObj = { ...req.query };
     const excludedFields = ["page", "sort", "limit", "fields"];
     excludedFields.forEach((el) => delete queryObj[el]);
 
-    // 2) Advanced filtering
+    // 1B) Advanced filtering
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
-    // { difficulty: 'easy', duration: {$gte: 5} }
-    // gte, gt, lte, lt
+    // { difficulty: 'easy', duration: {$gte: 5} } this is queryStr
+    // gte, gt, lte, lt These are filter operators
 
     const query = await Tour.find(JSON.parse(queryStr));
+
+    // // 2) Sorting Gave up and just going to use + instead of , in url parameters
+    // if (req.query.sort) {
+    //   // const sortBy = req.query.sort.split(",").join(" ");
+    //   // console.log("this is sortBy: ", sortBy);
+    //   // console.log("this is sortBy type: ", typeof sortBy);
+    //   // query = query.sort(sortBy); // this is the troubled sort method TypeError: The comparison function must be either a function or undefined
+    //   // sort('price ratingsAverage')
+    // } else {
+    //   // default sort of createdAt property in desceding order
+    //   query = query.sort("-createdAt");
+    // }
 
     // EXECUTE QUERY
     const tours = await query;
