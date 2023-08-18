@@ -16,19 +16,29 @@ exports.getAllTours = async (req, res) => {
     // { difficulty: 'easy', duration: {$gte: 5} } this is queryStr
     // gte, gt, lte, lt These are filter operators
 
-    const query = await Tour.find(JSON.parse(queryStr));
+    // The error was due to await, it is not returning the query but the object, .select can only be operated on query not the object, so the solution is to remove await
+    let query = Tour.find(JSON.parse(queryStr));
 
     // // 2) Sorting Gave up and just going to use + instead of , in url parameters
-    // if (req.query.sort) {
-    //   // const sortBy = req.query.sort.split(",").join(" ");
-    //   // console.log("this is sortBy: ", sortBy);
-    //   // console.log("this is sortBy type: ", typeof sortBy);
-    //   // query = query.sort(sortBy); // this is the troubled sort method TypeError: The comparison function must be either a function or undefined
-    //   // sort('price ratingsAverage')
-    // } else {
-    //   // default sort of createdAt property in desceding order
-    //   query = query.sort("-createdAt");
-    // }
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(",").join(" ");
+      // console.log("this is sortBy: ", sortBy);
+      // console.log("this is sortBy type: ", typeof sortBy);
+      query = query.sort(sortBy); // this is the troubled sort method TypeError: The comparison function must be either a function or undefined
+      // sort('price ratingsAverage')
+    } else {
+      // default sort of createdAt property in desceding order
+      query = query.sort("-createdAt");
+    }
+
+    // 3) Field limiting
+    if (req.query.fields) {
+      const fields = req.query.fields.split(",").join(" ");
+      query = query.select(fields);
+    } else {
+      // When the fields property is not specified:
+      query = query.select("-__v");
+    }
 
     // EXECUTE QUERY
     const tours = await query;
