@@ -19,11 +19,9 @@ exports.getAllTours = async (req, res) => {
     // The error was due to await, it is not returning the query but the object, .select can only be operated on query not the object, so the solution is to remove await
     let query = Tour.find(JSON.parse(queryStr));
 
-    // // 2) Sorting Gave up and just going to use + instead of , in url parameters
+    // 2) Sorting
     if (req.query.sort) {
       const sortBy = req.query.sort.split(",").join(" ");
-      // console.log("this is sortBy: ", sortBy);
-      // console.log("this is sortBy type: ", typeof sortBy);
       query = query.sort(sortBy); // this is the troubled sort method TypeError: The comparison function must be either a function or undefined
       // sort('price ratingsAverage')
     } else {
@@ -40,14 +38,21 @@ exports.getAllTours = async (req, res) => {
       query = query.select("-__v");
     }
 
+    // 4) Pagination
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 1 || 100;
+    const skip = (page - 1) * limit; // The number here is all the results that come before the page we want now. Want page 3, we skip all of page 2 results.
+
+    // page=2&limit=10, 1-10 are page 1, 11-20 are page 2, etc.
+    query = query.skip(skip).limit(limit);
+
+    if (req.query.page) {
+      const numTours = await Tour.countDocuments();
+      if (skip >= numTours) throw new Error("This page does not exist");
+    }
+
     // EXECUTE QUERY
     const tours = await query;
-
-    // const query = await Tour.find()
-    //   .where("duration")
-    //   .equals(5)
-    //   .where("difficulty")
-    //   .equals("easy");
 
     // SEND RESPONSE
     res.status(200).json({
