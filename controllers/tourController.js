@@ -175,13 +175,21 @@ exports.getTourStats = async (req, res) => {
       },
       {
         $group: {
-          _id: null,
+          _id: { $toUpper: "$difficulty" },
+          numTours: { $sum: 1 }, // For each doc that comes through pipeline, add a 1 for number of tours
+          numRatings: { $sum: "$ratingsQuantity" },
           avgRating: { $avg: "$ratingsAverage" },
           avgPrice: { $avg: "$price" },
           minPrice: { $min: "$price" },
           maxPrice: { $max: "$price" },
         },
       },
+      {
+        $sort: { avgPrice: 1 },
+      },
+      // {
+      //   $match: { _id: { $ne: "EASY" } }, // This is trying to match to an id that is not equal to EASY
+      // },
     ]);
 
     res.status(200).json({
