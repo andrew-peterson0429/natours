@@ -12,6 +12,7 @@ exports.aliasTopTours = (req, res, next) => {
 exports.getAllTours = async (req, res) => {
   try {
     console.log("this is req.query: ", req.query);
+    // This is older way of building api features
     // BUILD QUERY
     // 1A) Filtering
     // const queryObj = { ...req.query };
