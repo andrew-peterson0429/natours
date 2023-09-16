@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const slugify = require("slugify");
-const validator = require("validator");
+// const validator = require("validator");
 
 const tourSchema = new mongoose.Schema(
   {
@@ -9,7 +9,7 @@ const tourSchema = new mongoose.Schema(
       required: [true, "A tour must have a name"], // 2nd arg is err msg to display
       unique: true,
       trim: true,
-      maxLength: [40, "A tour name must less or equal to 40 characters"],
+      maxLength: [40, "A tour name must be less or equal to 40 characters"],
       minlength: [10, "A tour name must have more or equal to 10 characters"],
       // validate: [validator.isAlpha, "Tour name must only contain characters"],
     },
