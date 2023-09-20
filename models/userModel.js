@@ -36,9 +36,15 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre("save", async function (next) {
+  // Only run this function if password was actually modifed
   if (!this.isModified("password")) return;
 
+  // Hash the password with cost of 12
   this.password = await bcrypt.hash(this.password, 12);
+
+  // Delete the passwordConfirm field. After validation is successful, no long need this field.
+  this.passwordConfirm = undefined;
+  next();
 });
 
 const User = mongoose.model("User", userSchema);
