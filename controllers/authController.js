@@ -24,7 +24,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.login = (req, res, next) => {
+exports.login = catchAsync(async (req, res, next) => {
   // destructoring req.body.email and req.body.password because the prop name is same.
   const { email, password } = req.body;
 
@@ -34,7 +34,13 @@ exports.login = (req, res, next) => {
   }
 
   // 2) Check if user exists && password is correct
-  const user = User.findOne({ email });
+  const user = await User.findOne({ email }).select("+password");
+
+  if (!user || !(await user.correctPassword(password, user.password))) {
+    return next(new AppError("Incorrect email or password", 401));
+  }
+
+  console.log("this is user: ", user);
 
   // 3) If everything ok, send JWT to client
   const token = "";
@@ -42,4 +48,4 @@ exports.login = (req, res, next) => {
     status: "success",
     token,
   });
-};
+});
