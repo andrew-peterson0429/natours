@@ -19,6 +19,8 @@ app.use(express.static(`${__dirname}/public`));
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
+  // console.log("This is req.headers: ", req.headers);
+
   next();
 });
 
