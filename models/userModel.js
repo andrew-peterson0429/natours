@@ -59,13 +59,21 @@ userSchema.methods.correctPassword = async function (
 userSchema.methods.changedPasswordAfter = function (JWTtimestamp) {
   // Check to see if password has been changed
   if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10,
+    );
+
     console.log(
-      "this is this.passwordChangedAt and JWTtimestamp: ",
-      this.passwordChangedAt,
+      "this is changedTimestamp and JWTtimestamp: ",
+      changedTimestamp,
       JWTtimestamp,
     );
+
+    return JWTtimestamp < changedTimestamp; // ex: the token was issued at time 100, but then the pass was changed at time 200. Means that the password was changed after token was issued.
   }
 
+  // False means password has not changed
   return false;
 };
 

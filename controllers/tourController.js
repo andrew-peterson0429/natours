@@ -12,7 +12,7 @@ exports.aliasTopTours = (req, res, next) => {
 };
 
 exports.getAllTours = catchAsync(async (req, res, next) => {
-  console.log("this is req.query: ", req.query);
+  // console.log("this is req.query: ", req.query);
   // This is older way of building api features
   // BUILD QUERY
   // 1A) Filtering
