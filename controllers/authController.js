@@ -17,6 +17,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
     passwordChangedAt: req.body.passwordChangedAt,
+    role: req.body.role,
   });
 
   const token = signToken(newUser._id);
@@ -98,4 +99,16 @@ exports.protect = catchAsync(async (req, res, next) => {
   next();
 });
 
-// Made changes in Postman for development
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    // roles is an array ["admin", "lead-guide"] or role = "user"
+    // If this roles array does not include the role of the current user, then no permission is given
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new AppError("You do not have permission to perform this action", 403),
+      );
+    }
+
+    next();
+  };
+};
