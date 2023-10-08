@@ -201,6 +201,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   user.password = req.body.password;
   user.passwordConfrim = req.body.passwordConfirm;
 
+  // await user.validate(); // could be solution to error
   await user.save({ validateBeforeSave: false });
   // User.findByIdAndUpdate will NOT work as intended!
 
