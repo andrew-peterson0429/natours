@@ -78,3 +78,5 @@ exports.deleteUser = (req, res) => {
     message: "This route is not yet defined!",
   });
 };
+
+// Worked on data in DB
