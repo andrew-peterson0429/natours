@@ -15,6 +15,20 @@ const signToken = (id) => {
 // Need access to user because that is where id is, need a satus code to send, and need access to res object in order to send the res to client
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
+  const cookieOptions = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
+    ),
+    httpOnly: true, // Makes it so cookie cannot be accessed or modified in anyway by the browser (It will only recieve cookie, store it, then send it automatically along with every req)
+  };
+
+  // secure: true, // cookie will only be sent on encrypted connection HTTPS
+  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
+
+  res.cookie("jwt", token, cookieOptions);
+
+  // Removes password from res output
+  user.password = undefined;
 
   res.status(statusCode).json({
     status: "Success",
