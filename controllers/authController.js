@@ -222,5 +222,3 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   // 4) Log the user in, send JWT
   createSendToken(user, 200, res);
 });
-
-// Daily commit. Don't judge me. Please don't judge me.
