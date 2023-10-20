@@ -77,4 +77,4 @@ app.use(globalErrorHandler);
 
 module.exports = app;
 
-// Studying data modelling. Additional study. Even more study.
+// Studying data modelling. Additional study. Even more study. Finished data modelling lecture
