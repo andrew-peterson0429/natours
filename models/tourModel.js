@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const slugify = require("slugify");
-const User = require("./userModel");
+// const User = require("./userModel");
 // const validator = require("validator");
 
 const tourSchema = new mongoose.Schema(
@@ -103,7 +103,14 @@ const tourSchema = new mongoose.Schema(
         day: Number,
       },
     ],
-    guides: Array,
+    guides: [
+      {
+        // expect the type of each of the elements in arr to be a MongoDB id.
+        type: mongoose.Schema.ObjectId,
+        // Establish references between different data sets in Mongoose.
+        ref: "User",
+      },
+    ],
   },
   {
     toJSON: { virtuals: true },
@@ -123,12 +130,13 @@ tourSchema.pre("save", function (next) {
   next();
 });
 
-tourSchema.pre("save", async function (next) {
-  // This is an array of all user ids. Mapping over and each iteration, get user doc for current id. Putting promises in array.
-  const guidesPromises = this.guides.map(async (id) => await User.findById(id));
-  this.guides = await Promise.all(guidesPromises);
-  next();
-});
+// Embedding guides in tourModel
+// tourSchema.pre("save", async function (next) {
+//   // This is an array of all user ids. Mapping over and each iteration, get user doc for current id. Putting promises in array.
+//   const guidesPromises = this.guides.map(async (id) => await User.findById(id));
+//   this.guides = await Promise.all(guidesPromises);
+//   next();
+// });
 
 // tourSchema.pre("save", function(next) {
 //   console.log("will save document...");
