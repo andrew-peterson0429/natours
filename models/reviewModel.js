@@ -34,10 +34,14 @@ const reviewSchema = new mongoose.Schema(
 
 // Pre-find middleware
 reviewSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: "tour",
-    select: "name",
-  });
+  // Commented out because there are too many populates happening when getting tour reviews.
+  // this.populate({
+  //   path: "tour",
+  //   select: "name",
+  // }).populate({
+  //   path: "user",
+  //   select: "name photo",
+  // });
 
   this.populate({
     path: "user",
