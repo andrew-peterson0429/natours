@@ -8,10 +8,6 @@ const router = express.Router();
 // router.param('id', tourController.checkId);
 
 // Nested route
-// POST /tour/234fad4/reviews
-// GET /tour/234fad4/reviews
-// GET /tour/234fad4/reviews/94887fda
-
 router.use("/:tourId/reviews", reviewRouter);
 
 router
