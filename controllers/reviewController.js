@@ -75,4 +75,5 @@ exports.createReview = catchAsync(async (req, res, next) => {
   next();
 });
 
+exports.updateReview = factory.updateOne(Review);
 exports.deleteReview = factory.deleteOne(Review);
