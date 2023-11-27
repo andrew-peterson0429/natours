@@ -33,6 +33,8 @@ const reviewSchema = new mongoose.Schema(
   },
 );
 
+reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
+
 // Pre-find middleware
 reviewSchema.pre(/^find/, function (next) {
   // Commented out because there are too many populates happening when getting tour reviews.
