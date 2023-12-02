@@ -236,3 +236,5 @@ exports.getDistances = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+// Added API documentation
