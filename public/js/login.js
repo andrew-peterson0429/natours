@@ -13,7 +13,7 @@ const login = async (email, password) => {
     });
     console.log("This is the res: ", res);
   } catch (err) {
-    console.error(err);
+    console.error(err.response.data);
   }
 };
 
@@ -22,5 +22,5 @@ document.querySelector(".form").addEventListener("submit", (e) => {
 
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
-  login({ email, password });
+  login(email, password);
 });

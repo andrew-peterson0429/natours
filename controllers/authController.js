@@ -83,6 +83,8 @@ exports.protect = catchAsync(async (req, res, next) => {
   ) {
     // split the header auth string at the space and use the second element.
     token = req.headers.authorization.split(" ")[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
   // console.log("this is token: ", token);
 
