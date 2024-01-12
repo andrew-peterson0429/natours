@@ -3,6 +3,8 @@ import "@babel/polyfill";
 import { displayMap } from "./mapbox";
 import { login } from "./login";
 
+console.log("index.js has been added to bundle and should be accessible!");
+
 //DOM Elements
 const mapBox = document.getElementById("map");
 const loginForm = document.querySelector(".form");
