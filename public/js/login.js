@@ -1,9 +1,10 @@
 /* eslint-disable */
 // import axios from "axios";
+import { showAlert } from "./alerts";
+console.log("login.js file added!");
 
 const loginForm = document.querySelector(".form");
 
-console.log("login.js file added!");
 const login = async (email, password) => {
   console.log(email, password);
   try {
@@ -18,7 +19,7 @@ const login = async (email, password) => {
     });
 
     if (res.data.status === "success") {
-      alert("Logged in successfully!");
+      // showAlert("success", "Logged in successfully!");
       window.setTimeout(() => {
         location.assign("/");
       }, 1500);
@@ -26,7 +27,7 @@ const login = async (email, password) => {
 
     console.log("This is the res: ", res);
   } catch (err) {
-    alert(err.response.data.message);
+    // showAlert("error", err.response.data.message);
   }
 };
 
@@ -36,3 +37,5 @@ loginForm.addEventListener("submit", (e) => {
   const password = document.getElementById("password").value;
   login(email, password);
 });
+
+export { login };
