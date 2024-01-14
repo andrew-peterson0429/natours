@@ -12,7 +12,7 @@ exports.getOverview = catchAsync(async (req, res, next) => {
 
   res.status(200).render("overview", {
     title: "All Tours",
-    tours,
+    tours
   });
 });
 
@@ -20,7 +20,7 @@ exports.getTour = catchAsync(async (req, res, next) => {
   // 1) Get the data, for the requested tour (includes reviews and guides)
   const tour = await Tour.findOne({ slug: req.params.slug }).populate({
     path: "reviews",
-    fields: "review rating user",
+    fields: "review rating user"
   });
   //2) Build template
 
@@ -38,7 +38,7 @@ exports.getTour = catchAsync(async (req, res, next) => {
     // )
     .render("tour", {
       title: `${tour.name} Tour`,
-      tour,
+      tour
     });
 });
 
@@ -50,9 +50,9 @@ exports.getLoginForm = (req, res) => {
     .status(200)
     .set(
       "Content-Security-Policy",
-      "connect-src 'self' https://cdnjs.cloudflare.com",
+      "connect-src 'self' https://cdnjs.cloudflare.com"
     )
     .render("login", {
-      title: "Log into your account",
+      title: "Log into your account"
     });
 };
