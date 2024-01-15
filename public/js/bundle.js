@@ -8278,23 +8278,24 @@ var login = exports.login = /*#__PURE__*/function () {
           });
         case 4:
           res = _context.sent;
-          if (res.data.status != "error") {
+          console.log("This is res.data.status: ", res.data.status);
+          if (res.data.status === "Success") {
             (0, _alerts.showAlert)("success", "Logged in successfully!");
             window.setTimeout(function () {
               location.assign("/");
             }, 1500);
           }
-          _context.next = 11;
+          _context.next = 12;
           break;
-        case 8:
-          _context.prev = 8;
+        case 9:
+          _context.prev = 9;
           _context.t0 = _context["catch"](1);
           (0, _alerts.showAlert)("error", _context.t0.response.data.message);
-        case 11:
+        case 12:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[1, 8]]);
+    }, _callee, null, [[1, 9]]);
   }));
   return function login(_x, _x2) {
     return _ref.apply(this, arguments);
