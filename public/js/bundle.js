@@ -8195,9 +8195,10 @@ module.exports = require('./lib/axios');
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.showAlert = exports.hideAlert = void 0;
+exports.showAlert = void 0;
 /* eslint-disable */
-var hideAlert = exports.hideAlert = function hideAlert() {
+
+var hideAlert = function hideAlert() {
   var el = document.querySelector(".alert");
   if (el) el.parentElement.removeChild(el);
 };
@@ -8264,8 +8265,9 @@ var login = exports.login = /*#__PURE__*/function () {
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          _context.prev = 0;
-          _context.next = 3;
+          console.log("Entered login block.");
+          _context.prev = 1;
+          _context.next = 4;
           return (0, _axios.default)({
             method: "POST",
             url: "http://127.0.0.1:3000/api/v1/users/login",
@@ -8274,25 +8276,25 @@ var login = exports.login = /*#__PURE__*/function () {
               password: password
             }
           });
-        case 3:
+        case 4:
           res = _context.sent;
-          if (res.data.status === "success") {
+          if (res.data.status != "error") {
             (0, _alerts.showAlert)("success", "Logged in successfully!");
             window.setTimeout(function () {
               location.assign("/");
             }, 1500);
           }
-          _context.next = 10;
+          _context.next = 11;
           break;
-        case 7:
-          _context.prev = 7;
-          _context.t0 = _context["catch"](0);
+        case 8:
+          _context.prev = 8;
+          _context.t0 = _context["catch"](1);
           (0, _alerts.showAlert)("error", _context.t0.response.data.message);
-        case 10:
+        case 11:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 7]]);
+    }, _callee, null, [[1, 8]]);
   }));
   return function login(_x, _x2) {
     return _ref.apply(this, arguments);
