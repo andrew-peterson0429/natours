@@ -1,13 +1,14 @@
 /* eslint-disable */
 import "@babel/polyfill";
 // import { displayMap } from "./mapbox";
-import { login } from "./login";
+import { login, logout } from "./login";
 
 console.log("index.js has been added to bundle and should be accessible!");
 
 //DOM Elements
 const mapBox = document.getElementById("map");
 const loginForm = document.querySelector(".form");
+const logOutBtn = document.querySelector(".nav__el--logout");
 
 // Values
 
@@ -26,3 +27,5 @@ if (loginForm) {
     login(email, password);
   });
 }
+
+if (logOutBtn) logOutBtn.addEventListener("click", logout);
