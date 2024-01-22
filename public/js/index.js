@@ -7,7 +7,7 @@ console.log("index.js has been added to bundle and should be accessible!");
 
 //DOM Elements
 const mapBox = document.getElementById("map");
-const loginForm = document.querySelector(".form");
+const loginForm = document.querySelector(".form--login");
 const logOutBtn = document.querySelector(".nav__el--logout");
 
 // Values

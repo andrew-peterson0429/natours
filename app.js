@@ -43,7 +43,7 @@ app.use(
           "https://*.mapbox.com",
           "https://js.stripe.com",
           "https://m.stripe.network",
-          "https://*.cloudflare.com",
+          "https://*.cloudflare.com"
         ],
         frameSrc: ["'self'", "https://js.stripe.com"],
         objectSrc: ["'none'"],
@@ -55,7 +55,7 @@ app.use(
           "https://*.tiles.mapbox.com",
           "https://api.mapbox.com",
           "https://events.mapbox.com",
-          "https://m.stripe.network",
+          "https://m.stripe.network"
         ],
         childSrc: ["'self'", "blob:"],
         imgSrc: ["'self'", "data:", "blob:"],
@@ -69,12 +69,12 @@ app.use(
           "https://*.mapbox.com",
           "https://*.cloudflare.com/",
           "https://bundle.js:*",
-          "ws://127.0.0.1:*/",
+          "ws://127.0.0.1:*/"
         ],
-        upgradeInsecureRequests: [],
-      },
-    },
-  }),
+        upgradeInsecureRequests: []
+      }
+    }
+  })
 );
 
 // Development logging
@@ -86,12 +86,13 @@ if (process.env.NODE_ENV === "development") {
 const limiter = rateLimit({
   max: 100,
   windowMs: 60 * 60 * 1000,
-  message: "Too many requests from this IP. Please try again in one hour!",
+  message: "Too many requests from this IP. Please try again in one hour!"
 });
 app.use("/api", limiter);
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: "10kb" }));
+app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 app.use(cookieParser());
 
 // Data sanitization against NoSQL query injection
@@ -109,9 +110,9 @@ app.use(
       "ratingsAverage",
       "maxGroupSize",
       "difficulty",
-      "price",
-    ],
-  }),
+      "price"
+    ]
+  })
 );
 
 // Test middleware

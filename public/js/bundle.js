@@ -8265,9 +8265,8 @@ var login = exports.login = /*#__PURE__*/function () {
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          console.log("Entered login block.");
-          _context.prev = 1;
-          _context.next = 4;
+          _context.prev = 0;
+          _context.next = 3;
           return (0, _axios.default)({
             method: "POST",
             url: "http://127.0.0.1:3000/api/v1/users/login",
@@ -8276,7 +8275,7 @@ var login = exports.login = /*#__PURE__*/function () {
               password: password
             }
           });
-        case 4:
+        case 3:
           res = _context.sent;
           if (res.data.status === "success") {
             (0, _alerts.showAlert)("success", "Logged in successfully!");
@@ -8284,17 +8283,17 @@ var login = exports.login = /*#__PURE__*/function () {
               location.assign("/");
             }, 1500);
           }
-          _context.next = 11;
+          _context.next = 10;
           break;
-        case 8:
-          _context.prev = 8;
-          _context.t0 = _context["catch"](1);
+        case 7:
+          _context.prev = 7;
+          _context.t0 = _context["catch"](0);
           (0, _alerts.showAlert)("error", _context.t0.response.data.message);
-        case 11:
+        case 10:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[1, 8]]);
+    }, _callee, null, [[0, 7]]);
   }));
   return function login(_x, _x2) {
     return _ref.apply(this, arguments);
@@ -8474,7 +8473,7 @@ console.log("index.js has been added to bundle and should be accessible!");
 
 //DOM Elements
 var mapBox = document.getElementById("map");
-var loginForm = document.querySelector(".form");
+var loginForm = document.querySelector(".form--login");
 var logOutBtn = document.querySelector(".nav__el--logout");
 
 // Values
