@@ -7,38 +7,41 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "A user must have a name"],
-    maxLength: [40, "A name must less or equal to 40 characters"],
+    maxLength: [40, "A name must less or equal to 40 characters"]
   },
   email: {
     type: String,
     required: [true, "A user must have a email"],
     unique: true,
     lowercase: true,
-    validate: [validator.isEmail, "Please provide a valid email"],
+    validate: [validator.isEmail, "Please provide a valid email"]
   },
-  photo: String,
+  photo: {
+    type: String,
+    default: "default.jpg"
+  },
   role: {
     type: String,
     enum: ["user", "guide", "lead-guide", "admin"],
-    default: "user",
+    default: "user"
   },
   password: {
     type: String,
     required: [true, "A user must have a password"],
     maxLength: [40, "A password must be less or equal to 40 characters"],
     minlength: [8, "A password must have more or equal to 8 characters"],
-    select: false,
+    select: false
   },
   passwordConfirm: {
     type: String,
     required: [true, "Please confirm your password"],
     validate: {
       // This only works on SAVE!!!
-      validator: function (el) {
+      validator: function(el) {
         return el === this.password; // returns if pass is same, else false
       },
-      message: "Passwords are not the same!",
-    },
+      message: "Passwords are not the same!"
+    }
   },
   passwordChangedAt: Date,
   passwordResetToken: String,
@@ -46,11 +49,11 @@ const userSchema = new mongoose.Schema({
   active: {
     type: Boolean,
     default: true,
-    select: false,
-  },
+    select: false
+  }
 });
 
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", async function(next) {
   // Only run this function if password was actually modifed
   if (!this.isModified("password")) return;
 
@@ -62,38 +65,38 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.pre("save", function (next) {
+userSchema.pre("save", function(next) {
   if (!this.isModified("password") || this.isNew) return next();
 
   this.passwordChangedAt = Date.now() - 1000;
   next();
 });
 
-userSchema.methods.correctPassword = async function (
+userSchema.methods.correctPassword = async function(
   canidatePassword,
-  userPassword,
+  userPassword
 ) {
   return await bcrypt.compare(canidatePassword, userPassword);
 };
 
-userSchema.pre(/^find/, function (next) {
+userSchema.pre(/^find/, function(next) {
   // this point to current query
   this.find({ active: { $ne: false } });
   next();
 });
 
-userSchema.methods.changedPasswordAfter = function (JWTtimestamp) {
+userSchema.methods.changedPasswordAfter = function(JWTtimestamp) {
   // Check to see if password has been changed
   if (this.passwordChangedAt) {
     const changedTimestamp = parseInt(
       this.passwordChangedAt.getTime() / 1000,
-      10,
+      10
     );
 
     console.log(
       "this is changedTimestamp and JWTtimestamp: ",
       changedTimestamp,
-      JWTtimestamp,
+      JWTtimestamp
     );
 
     return JWTtimestamp < changedTimestamp; // ex: the token was issued at time 100, but then the pass was changed at time 200. Means that the password was changed after token was issued.
@@ -103,7 +106,7 @@ userSchema.methods.changedPasswordAfter = function (JWTtimestamp) {
   return false;
 };
 
-userSchema.methods.createPasswordResetToken = function () {
+userSchema.methods.createPasswordResetToken = function() {
   const resetToken = crypto.randomBytes(32).toString("hex");
 
   this.passwordResetToken = crypto
