@@ -20,7 +20,7 @@ router
   .get(
     authController.protect,
     authController.restrictTo("admin", "lead-guide", "guide"),
-    tourController.getMonthlyPlan,
+    tourController.getMonthlyPlan
   );
 
 router
@@ -35,7 +35,7 @@ router
   .post(
     authController.protect,
     authController.restrictTo("admin", "lead-guide"),
-    tourController.createTour,
+    tourController.createTour
   );
 router
   .route("/:id")
@@ -43,12 +43,14 @@ router
   .patch(
     authController.protect,
     authController.restrictTo("admin", "lead-guide"),
-    tourController.updateTour,
+    tourController.uploadTourImages,
+    tourController.resizeTourImages,
+    tourController.updateTour
   )
   .delete(
     authController.protect,
     authController.restrictTo("admin", "lead-guide"),
-    tourController.deleteTour,
+    tourController.deleteTour
   );
 
 module.exports = router;
