@@ -72,8 +72,6 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError("Incorrect email or password", 401));
   }
 
-  // console.log("this is user: ", user);
-
   // 3) If everything ok, send JWT to client
   createSendToken(user, 200, res);
 });

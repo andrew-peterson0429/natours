@@ -66,6 +66,24 @@ exports.getAccount = (req, res) => {
   });
 };
 
+exports.getSignupForm = (req, res) => {
+  res
+    .status(200)
+    .set(
+      "Content-Security-Policy",
+      "connect-src 'self' https://cdnjs.cloudflare.com"
+    )
+    .render("signup", {
+      title: "Sign up for your account"
+    });
+};
+
+exports.getAccount = (req, res) => {
+  res.status(200).render("account", {
+    title: "Your account"
+  });
+};
+
 exports.getMyTours = catchAsync(async (req, res, next) => {
   // 1) Find all bookings
   const bookings = await Booking.find({
