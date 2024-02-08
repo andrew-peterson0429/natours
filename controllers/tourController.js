@@ -64,76 +64,6 @@ exports.aliasTopTours = (req, res, next) => {
   next();
 };
 
-// exports.getAllTours = catchAsync(async (req, res, next) => {
-//   // console.log("this is req.query: ", req.query);
-//   // This is older way of building api features
-//   // BUILD QUERY
-//   // 1A) Filtering
-//   // const queryObj = { ...req.query };
-//   // const excludedFields = ["page", "sort", "limit", "fields"];
-//   // excludedFields.forEach((el) => delete queryObj[el]);
-
-//   // 1B) Advanced filtering
-//   // let queryStr = JSON.stringify(queryObj);
-//   // queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-
-//   // { difficulty: 'easy', duration: {$gte: 5} } this is queryStr
-//   // gte, gt, lte, lt These are filter operators
-
-//   // The error was due to await, it is not returning the query but the object, .select can only be operated on query not the object, so the solution is to remove await
-//   // let query = Tour.find(JSON.parse(queryStr));
-
-//   // 2) Sorting
-//   // if (req.query.sort) {
-//   //   const sortBy = req.query.sort.split(",").join(" ");
-//   //   query = query.sort(sortBy); // this is the troubled sort method TypeError: The comparison function must be either a function or undefined
-//   //   // sort('price ratingsAverage')
-//   // } else {
-//   //   // default sort of createdAt property in desceding order
-//   //   query = query.sort("-createdAt");
-//   // }
-
-//   // 3) Field limiting
-//   // if (req.query.fields) {
-//   //   const fields = req.query.fields.split(",").join(" ");
-//   //   query = query.select(fields);
-//   // } else {
-//   //   // When the fields property is not specified:
-//   //   query = query.select("-__v");
-//   // }
-
-//   // 4) Pagination
-//   // const page = req.query.page * 1 || 1;
-//   // const limit = req.query.limit * 1 || 100;
-//   // const skip = (page - 1) * limit; // The number here is all the results that come before the page we want now. Want page 3, we skip all of page 2 results.
-
-//   // // page=2&limit=10, 1-10 are page 1, 11-20 are page 2, etc.
-//   // query = query.skip(skip).limit(limit);
-
-//   // if (req.query.page) {
-//   //   const numTours = await Tour.countDocuments();
-//   //   if (skip >= numTours) throw new Error("This page does not exist");
-//   // }
-
-//   // EXECUTE QUERY
-//   const features = new APIfeatures(Tour.find(), req.query)
-//     .filter()
-//     .sort()
-//     .limitFields()
-//     .paginate();
-//   const tours = await features.query;
-
-//   // SEND RESPONSE
-//   res.status(200).json({
-//     status: "success",
-//     requestedAt: req.requestTime,
-//     results: tours.length,
-//     data: {
-//       tours,
-//     },
-//   });
-// });
-
 exports.getAllTours = factory.getAll(Tour);
 exports.getTour = factory.getOne(Tour, { path: "reviews" });
 exports.createTour = factory.createOne(Tour);
@@ -159,9 +89,6 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
     {
       $sort: { avgPrice: 1 }
     }
-    // {
-    //   $match: { _id: { $ne: "EASY" } }, // This is trying to match to an id that is not equal to EASY
-    // },
   ]);
 
   res.status(200).json({

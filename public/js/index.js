@@ -6,8 +6,6 @@ import { signup } from "./signup";
 import { updateSettings } from "./updateSettings";
 import { bookTour } from "./stripe";
 
-console.log("index.js has been added to bundle and should be accessible!");
-
 //DOM Elements
 const mapBox = document.getElementById("map");
 const loginForm = document.querySelector(".form--login");
@@ -23,7 +21,6 @@ const bookBtn = document.getElementById("book-tour");
 if (mapBox) {
   const locations = JSON.parse(mapBox.dataset.locations);
   // displayMap(locations);
-  console.log(locations);
 }
 
 if (loginForm) {
@@ -55,7 +52,6 @@ if (userDataForm)
     form.append("name", document.getElementById("name").value);
     form.append("email", document.getElementById("email").value);
     form.append("photo", document.getElementById("photo").files[0]);
-    // console.log("this is form: ", form);
 
     updateSettings(form, "data");
   });

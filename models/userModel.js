@@ -93,12 +93,6 @@ userSchema.methods.changedPasswordAfter = function(JWTtimestamp) {
       10
     );
 
-    console.log(
-      "this is changedTimestamp and JWTtimestamp: ",
-      changedTimestamp,
-      JWTtimestamp
-    );
-
     return JWTtimestamp < changedTimestamp; // ex: the token was issued at time 100, but then the pass was changed at time 200. Means that the password was changed after token was issued.
   }
 
@@ -115,10 +109,6 @@ userSchema.methods.createPasswordResetToken = function() {
     .digest("hex");
 
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
-
-  console.log("This is reset token as an object: ", { resetToken });
-  console.log("This is this.passwordResetToken: ", this.passwordResetToken);
-
   return resetToken;
 };
 
