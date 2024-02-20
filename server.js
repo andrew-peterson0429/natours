@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 
-process.on("uncaughtException", (err) => {
+process.on("uncaughtException", err => {
   console.log("UNCAUGHT EXCEPTION! Shutting down...");
   console.log(err.name, err.message);
 
@@ -13,14 +13,14 @@ const app = require("./app");
 
 const DB = process.env.DATABASE.replace(
   "<PASSWORD>",
-  process.env.DATABASE_PASSWORD,
+  process.env.DATABASE_PASSWORD
 );
 
 mongoose
   .connect(DB, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useFindAndModify: false,
+    useFindAndModify: false
   })
   .then(() => console.log("db connection successful"));
 
@@ -29,10 +29,17 @@ const server = app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });
 
-process.on("unhandledRejection", (err) => {
+process.on("unhandledRejection", err => {
   console.log("UHANDLED REJECTION! Shutting down...");
   console.log(err.name, err.message);
   server.close(() => {
     process.exit(1);
+  });
+});
+
+process.on("SIGTERM", () => {
+  console.log("SIGTERM received. Shutting down...");
+  server.close(() => {
+    console.log("Process terminated!");
   });
 });
