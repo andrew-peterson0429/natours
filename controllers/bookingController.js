@@ -22,16 +22,18 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     mode: "payment",
     line_items: [
       {
+        quantity: 1,
         price_data: {
           currency: "usd",
           unit_amount: tour.price * 100,
           product_data: {
             name: `${tour.name} Tour`,
             description: tour.summary,
-            images: [`https://www.natours.dev/img/tours/${tour.imageCover}`]
+            images: [
+              `${req.protocol}://127.0.0.1:3000/img/tours/${tour.imageCover}`
+            ]
           }
-        },
-        quantity: 1
+        }
       }
     ]
   });
@@ -57,11 +59,10 @@ const createBookingCheckout = async session => {
   const tour = session.client_reference_id;
   const user = (await User.findOne({ email: session.customer_email })).id;
   const price = session.line_items[0].amount / 100;
-
   await Booking.create({ tour, user, price });
 };
 
-exports.webhookCheckout = (req, res, next) => {
+exports.webhookCheckout = catchAsync(async (req, res, next) => {
   const signature = req.headers["stripe-signature"];
   let event;
 
@@ -76,11 +77,12 @@ exports.webhookCheckout = (req, res, next) => {
     return res.status(400).send(`Webhook error: ${err.message}`);
   }
 
-  if (event.type === "checkout.session.complete") {
-    createBookingCheckout(event.data.object);
+  if (event.type === "checkout.session.completed") {
+    await createBookingCheckout(event.data.object);
+
     res.status(200).json({ recieved: true });
   }
-};
+});
 
 exports.createBooking = factory.createOne(Booking);
 exports.getBooking = factory.getOne(Booking);
