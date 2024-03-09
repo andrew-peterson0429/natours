@@ -26,7 +26,11 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
           product_data: {
             name: `${tour.name} Tour`,
             description: tour.summary,
-            images: [`https://www.natours.dev/img/tours/${tour.imageCover}`]
+            images: [
+              `${req.protocol}://${req.get("host")}/img/tours/${
+                tour.imageCover
+              }`
+            ]
           }
         },
         quantity: 1
@@ -42,7 +46,6 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 });
 
 exports.createBookingCheckout = catchAsync(async (req, res, next) => {
-  // This is only temporary, because it is unsecure. Anyone can make bookings without paying.
   const { tour, user, price } = req.query;
 
   if (!tour && !user && !price) return next();
